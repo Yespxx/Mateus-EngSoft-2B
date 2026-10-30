@@ -1,0 +1,82 @@
+classDiagram
+    direction TB
+
+    class Tutor {
+        -nome: String
+        -cpf: String
+        -telefone: String
+        +adicionarAnimal(animal: Animal) void
+    }
+
+    class Animal {
+        -nome: String
+        -especie: String
+        -peso: double
+        -dataNascimento: Date
+        +calcularIdade() int
+    }
+
+    class Veterinario {
+        -nome: String
+        -crmv: String
+        -especialidade: String
+        +estaDisponivel(data: Date) boolean
+    }
+
+    class Atendimento {
+        <<abstract>>
+        #data: Date
+        #observacoes: String
+        +calcularValor() double*
+        +getData() Date
+    }
+
+    class Consulta {
+        -valorConsulta: double
+        -retorno: boolean
+        +calcularValor() double
+    }
+
+    class Procedimento {
+        <<abstract>>
+        #valorBase: double
+        #valorMaterial: double
+    }
+
+    class Vacina {
+        -nomeVacina: String
+        -reforco: boolean
+        +calcularValor() double
+    }
+
+    class Exame {
+        -tipoExame: String
+        -urgente: boolean
+        +calcularValor() double
+    }
+
+    class Cirurgia {
+        -valorAnestesia: double
+        -diasInternacao: int
+        -valorDiaria: double
+        +calcularValor() double
+    }
+
+    class Fatura {
+        -numero: int
+        -dataEmissao: Date
+        +adicionarAtendimento(a: Atendimento) void
+        +calcularTotal() double
+    }
+
+    Atendimento <|-- Consulta
+    Atendimento <|-- Procedimento
+    Procedimento <|-- Vacina
+    Procedimento <|-- Exame
+    Procedimento <|-- Cirurgia
+
+    Tutor "1" -- "1..*" Animal : possui
+    Animal "1" -- "0..*" Atendimento : recebe
+    Veterinario "1" -- "0..*" Atendimento : realiza
+    Tutor "1" -- "0..*" Fatura : paga
+    Fatura "0..1" -- "1..*" Atendimento : inclui
